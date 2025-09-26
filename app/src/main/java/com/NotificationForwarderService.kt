@@ -24,7 +24,8 @@ class NotificationForwarderService : NotificationListenerService() {
         val url: String,
         val extractionPattern: String? = null,
         val titlePattern: String? = null,
-        val contentPattern: String? = null
+        val contentPattern: String? = null,
+        val valueMappings: Map<String, Map<String, Any>>? = null
     )
     
     data class NotificationPayload(
@@ -32,7 +33,8 @@ class NotificationForwarderService : NotificationListenerService() {
         val title: String?,
         val content: String?,
         val timestamp: Long,
-        val extractedData: String? = null
+        val extractedData: String? = null,
+        val mappedValues: Map<String, Any>? = null
     )
     
     override fun onNotificationPosted(sbn: StatusBarNotification) {
@@ -109,12 +111,23 @@ class NotificationForwarderService : NotificationListenerService() {
                 ?: contentMatch?.value
         }
         
+        // Look up mapped values based on extracted data
+        val mappedValues = extractedData?.let { key ->
+            rule.valueMappings?.get(key)?.also {
+                Log.d(TAG, "Found mapping for '$key': $it")
+            } ?: run {
+                Log.d(TAG, "No mapping found for '$key'")
+                null
+            }
+        }
+
         return NotificationPayload(
             app = packageName,
             title = title,
             content = content,
             timestamp = System.currentTimeMillis(),
-            extractedData = extractedData
+            extractedData = extractedData,
+            mappedValues = mappedValues
         )
     }
     

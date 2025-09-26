@@ -28,7 +28,8 @@ class MainActivity : AppCompatActivity() {
         val url: String,
         val extractionPattern: String? = null,
         val titlePattern: String? = null,
-        val contentPattern: String? = null
+        val contentPattern: String? = null,
+        val valueMappings: Map<String, Map<String, Any>>? = null
     )
     
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,8 +69,20 @@ class MainActivity : AppCompatActivity() {
             NotificationRule(
                 targetApp = "com.example.app",
                 url = "https://your-webhook-url.com/notify",
-                titlePattern = ".*important.*",
-                contentPattern = ".*error.*"
+                titlePattern = ".*Order.*",
+                extractionPattern = "Order #(\\w+)",
+                valueMappings = mapOf(
+                    "ABC123" to mapOf(
+                        "customer" to "John Doe",
+                        "priority" to "high",
+                        "amount" to 299.99
+                    ),
+                    "XYZ789" to mapOf(
+                        "customer" to "Jane Smith",
+                        "priority" to "normal",
+                        "amount" to 150.00
+                    )
+                )
             )
         )
         configEdit.setText(gson.toJson(defaultRules))
@@ -99,7 +112,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Notification access already granted", Toast.LENGTH_SHORT).show()
         }
     }
-    
+
     private fun isNotificationAccessGranted(): Boolean {
         val enabledListeners = NotificationManagerCompat.getEnabledListenerPackages(this)
         return enabledListeners.contains(packageName)
