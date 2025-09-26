@@ -40,7 +40,7 @@ jobs:
       run: ./gradlew assembleDebug
 
     - name: Upload APK
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: notification-forwarder-debug
         path: app/build/outputs/apk/debug/app-debug.apk
@@ -49,7 +49,7 @@ jobs:
       run: ./gradlew assembleRelease
 
     - name: Upload Release APK
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: notification-forwarder-release
         path: app/build/outputs/apk/release/app-release-unsigned.apk
