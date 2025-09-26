@@ -35,12 +35,12 @@ jobs:
 
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
+      with:
+        gradle-version: 8.4
 
-    - name: Generate Gradle wrapper if missing
+    - name: Generate Gradle wrapper
       run: |
-        if [ ! -f gradle/wrapper/gradle-wrapper.jar ]; then
-          gradle wrapper --gradle-version 8.4
-        fi
+        gradle wrapper --gradle-version 8.4
         chmod +x gradlew
 
     - name: Build debug APK
