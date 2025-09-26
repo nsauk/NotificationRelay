@@ -73,7 +73,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Config format: [{\"targetApp\":\"com.example.app\", \"url\":\"https://webhook.com\", \"titlePattern\":\".*pattern.*\", \"extractionPattern\":\"(\\\\d+)\"}]"
+        android:text="Config format: [{&quot;targetApp&quot;:&quot;com.example.app&quot;, &quot;url&quot;:&quot;https://webhook.com&quot;, &quot;titlePattern&quot;:&quot;.*pattern.*&quot;, &quot;extractionPattern&quot;:&quot;(\\\\d+)&quot;}]"
         android:textSize="10sp"
         android:textColor="#888888"
         android:fontFamily="monospace"
