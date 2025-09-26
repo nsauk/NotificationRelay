@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#1e1e1e">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Notification Forwarder"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#ffffff"
+        android:gravity="center"
+        android:layout_marginBottom="24dp" />
+
+    <TextView
+        android:id="@+id/statusText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Status: Checking..."
+        android:textSize="14sp"
+        android:textColor="#cccccc"
+        android:fontFamily="monospace"
+        android:background="#2d2d2d"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/enableButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="ENABLE NOTIFICATION ACCESS"
+        android:textColor="#ffffff"
+        android:background="#4CAF50"
+        android:layout_marginBottom="24dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Configuration (JSON):"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#ffffff"
+        android:layout_marginBottom="8dp" />
+
+    <EditText
+        android:id="@+id/configEdit"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#2d2d2d"
+        android:textColor="#ffffff"
+        android:textColorHint="#888888"
+        android:fontFamily="monospace"
+        android:textSize="12sp"
+        android:padding="12dp"
+        android:gravity="top|start"
+        android:hint="JSON configuration will appear here..."
+        android:scrollbars="vertical"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="SAVE CONFIG"
+        android:textColor="#ffffff"
+        android:background="#2196F3" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Config format: [{\"targetApp\":\"com.example.app\", \"url\":\"https://webhook.com\", \"titlePattern\":\".*pattern.*\", \"extractionPattern\":\"(\\\\d+)\"}]"
+        android:textSize="10sp"
+        android:textColor="#888888"
+        android:fontFamily="monospace"
+        android:layout_marginTop="8dp" />
+
+</LinearLayout>
