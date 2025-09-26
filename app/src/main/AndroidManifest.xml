@@ -7,9 +7,8 @@
 
     <application
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
         android:label="NotificationForwarder"
-        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+        android:theme="@android:style/Theme.Material.Light.DarkActionBar"
         android:usesCleartextTraffic="true">
 
         <activity

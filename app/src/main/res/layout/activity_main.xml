@@ -23,7 +23,7 @@
         android:text="Status: Checking..."
         android:textSize="14sp"
         android:textColor="#cccccc"
-        android:fontFamily="monospace"
+        android:typeface="monospace"
         android:background="#2d2d2d"
         android:padding="12dp"
         android:layout_marginBottom="16dp" />
@@ -54,7 +54,7 @@
         android:background="#2d2d2d"
         android:textColor="#ffffff"
         android:textColorHint="#888888"
-        android:fontFamily="monospace"
+        android:typeface="monospace"
         android:textSize="12sp"
         android:padding="12dp"
         android:gravity="top|start"
@@ -76,7 +76,7 @@
         android:text="Config format: [{&quot;targetApp&quot;:&quot;com.example.app&quot;, &quot;url&quot;:&quot;https://webhook.com&quot;, &quot;titlePattern&quot;:&quot;.*pattern.*&quot;, &quot;extractionPattern&quot;:&quot;(\\\\d+)&quot;}]"
         android:textSize="10sp"
         android:textColor="#888888"
-        android:fontFamily="monospace"
+        android:typeface="monospace"
         android:layout_marginTop="8dp" />
 
 </LinearLayout>
