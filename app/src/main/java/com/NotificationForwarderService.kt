@@ -127,11 +127,9 @@ class NotificationForwarderService : NotificationListenerService() {
                             // Replace placeholders like {1}, {2} with capture groups
                             mappedValues = values.mapValues { (_, value) ->
                                 if (value is String) {
-                                    var result = value
-                                    match.groupValues.forEachIndexed { index, group ->
-                                        result = result.replace("{$index}", group)
+                                    match.groupValues.foldIndexed(value) { index, acc, group ->
+                                        acc.replace("{$index}", group)
                                     }
-                                    result
                                 } else {
                                     value
                                 }
