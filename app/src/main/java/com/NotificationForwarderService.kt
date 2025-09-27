@@ -111,12 +111,12 @@ class NotificationForwarderService : NotificationListenerService() {
                 ?: contentMatch?.value
         }
         
-        val payload = mutableMapOf<String, Any>()
+        val payload = mutableMapOf<String, Any?>()
 
         if (rule.payloadMappings != null && extractedData != null) {
             val mappedValues = rule.payloadMappings[extractedData]
             if (mappedValues != null) {
-                payload.putAll(mappedValues)
+                payload.putAll(mappedValues as Map<String, Any>)
                 Log.d(TAG, "Using mapped payload for '$extractedData': $mappedValues")
             } else {
                 Log.d(TAG, "No mapping found for '$extractedData'")
