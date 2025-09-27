@@ -61,7 +61,11 @@ class NotificationForwarderService : NotificationListenerService() {
         for (rule in rules) {
             if (shouldProcessNotification(rule, packageName, title, content)) {
                 val payload = createPayload(rule, packageName, title, content)
-                sendHttpRequest(rule.url, payload)
+                if (payload.isNotEmpty()) {
+                    sendHttpRequest(rule.url, payload)
+                } else {
+                    Log.d(TAG, "Skipping HTTP request - empty payload")
+                }
             }
         }
     }
@@ -148,6 +152,7 @@ class NotificationForwarderService : NotificationListenerService() {
                 Log.d(TAG, "Using mapped payload: $mappedValues")
             } else {
                 Log.d(TAG, "No mapping found for '$extractedData'")
+                return emptyMap()
             }
         }
 
