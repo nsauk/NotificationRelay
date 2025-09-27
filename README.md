@@ -32,7 +32,7 @@ you will receive payloads as follows:
 
 ## Advanced usage
 
-Let's say you want to post a structured message to different topics at ntfy.sh after Wise transactions depending on currency.
+Let's say you want to post messages to different topics at ntfy.sh after Wise transactions depending on currency.
 
 With such a config in the app:
 ```json
@@ -43,11 +43,10 @@ With such a config in the app:
     "extractionPattern": ".+ spent at .+",
     "url": "https://ntfy.sh/",
     "payloadMappings": {
-      "([\\d.]{1,6}) ([A-Z]{3}) spent at (.+)\\. Tap here.+": {
-        "amount": "{0}",
-        "currency": "{1}",
-        "venue": "{2}",
-        "topic": "{1}-2ec42559-9596-4d44-9324-fc27d30acaba"
+      "([\\d.]{1,6}) ([A-Z]{3}) spent at (.+)\\. Tap.+": {
+        "message": "{2} {1}",
+        "title": "{3}",
+        "topic": "{2}-2ec42559-9596-4d44-9324-fc27d30acaba"
       }
     }
   }
@@ -56,9 +55,8 @@ With such a config in the app:
 you will receive payloads as follows:
 ```json
 {
-  "amount": "13.37",
-  "currency": "PLN",
-  "venue": "Grand Hotel Lodz",
+  "message": "PLN 13.37",
+  "title": "Grand Hotel Lodz",
   "topic": "PLN-2ec42559-9596-4d44-9324-fc27d30acaba"
 }
 ```
