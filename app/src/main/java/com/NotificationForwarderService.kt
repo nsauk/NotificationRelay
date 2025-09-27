@@ -99,7 +99,7 @@ class NotificationForwarderService : NotificationListenerService() {
         packageName: String,
         title: String?,
         content: String?
-    ): Map<String, Any> {
+    ): Map<String, Any?> {
         val extractedData = rule.extractionPattern?.let { pattern ->
             val regex = Regex(pattern, RegexOption.IGNORE_CASE)
             val titleMatch = title?.let { regex.find(it) }
@@ -147,7 +147,7 @@ class NotificationForwarderService : NotificationListenerService() {
         return payload
     }
 
-    private suspend fun sendHttpRequest(url: String, payload: Map<String, Any>) {
+    private suspend fun sendHttpRequest(url: String, payload: Map<String, Any?>) {
         try {
             val json = gson.toJson(payload)
             val mediaType = "application/json; charset=utf-8".toMediaType()
