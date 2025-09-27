@@ -112,7 +112,7 @@ class NotificationForwarderService : NotificationListenerService() {
         val payload = mutableMapOf<String, Any?>()
 
         if (rule.payloadMappings != null && extractedData != null) {
-            var mappedValues: Map<String, Any>? = null
+            var mappedValues: Map<String, Any>?
 
             // Try exact key match first
             mappedValues = rule.payloadMappings[extractedData]
@@ -144,7 +144,7 @@ class NotificationForwarderService : NotificationListenerService() {
             }
 
             if (mappedValues != null) {
-                payload.putAll(mappedValues as Map<String, Any>)
+                payload.putAll(mappedValues)
                 Log.d(TAG, "Using mapped payload: $mappedValues")
             } else {
                 Log.d(TAG, "No mapping found for '$extractedData'")
