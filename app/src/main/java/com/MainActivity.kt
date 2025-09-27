@@ -15,7 +15,6 @@ import com.google.gson.reflect.TypeToken
 import java.io.File
 
 class MainActivity : Activity() {
-    private lateinit var statusText: TextView
     private lateinit var configEdit: EditText
     private lateinit var saveButton: Button
     private lateinit var enableButton: Button
@@ -46,7 +45,6 @@ class MainActivity : Activity() {
     }
     
     private fun initViews() {
-        statusText = findViewById(R.id.statusText)
         configEdit = findViewById(R.id.configEdit)
         saveButton = findViewById(R.id.saveButton)
         enableButton = findViewById(R.id.enableButton)
@@ -124,17 +122,13 @@ class MainActivity : Activity() {
     
     private fun updateStatus() {
         val hasAccess = isNotificationAccessGranted()
-        val statusMessage = if (hasAccess) {
-            "✓ Notification access: GRANTED\n✓ Service: READY"
-        } else {
-            "✗ Notification access: DENIED\n✗ Service: DISABLED"
-        }
-        statusText.text = statusMessage
 
         if (hasAccess) {
-            statusText.setBackgroundColor(0xFF2d2d2d.toInt())
+            enableButton.text = "NOTIFICATION ACCESS GRANTED"
+            enableButton.isEnabled = false
         } else {
-            statusText.setBackgroundColor(0xFFcc0000.toInt())
+            enableButton.text = "⚠︎ GRANT NOTIFICATION ACCESS"
+            enableButton.isEnabled = true
         }
     }
     

@@ -6,23 +6,11 @@
     android:padding="16dp"
     android:background="#1e1e1e">
 
-    <TextView
-        android:id="@+id/statusText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Status: Checking..."
-        android:textSize="14sp"
-        android:textColor="#cccccc"
-        android:typeface="monospace"
-        android:background="#2d2d2d"
-        android:padding="12dp"
-        android:layout_marginBottom="16dp" />
-
     <Button
         android:id="@+id/enableButton"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:text="ENABLE NOTIFICATION ACCESS"
+        android:text="⚠︎ GRANT NOTIFICATION ACCESS"
         android:textColor="#ffffff"
         android:background="#4CAF50"
         android:layout_marginBottom="24dp" />
@@ -48,7 +36,7 @@
         android:textSize="12sp"
         android:padding="12dp"
         android:gravity="top|start"
-        android:hint="JSON configuration will appear here..."
+        android:hint="[]"
         android:scrollbars="vertical"
         android:layout_marginBottom="16dp" />
 
