@@ -25,16 +25,16 @@ class NotificationForwarderService : NotificationListenerService() {
         val extractionPattern: String? = null,
         val titlePattern: String? = null,
         val contentPattern: String? = null,
-        val valueMappings: Map<String, Map<String, Any>>? = null
+        val payloadMappings: Map<String, Map<String, Any>>? = null,
+        val sendMetadata: Boolean = true
     )
     
-    data class NotificationPayload(
+    data class NotificationMetadata(
         val app: String,
         val title: String?,
         val content: String?,
         val timestamp: Long,
-        val extractedData: String? = null,
-        val mappedValues: Map<String, Any>? = null
+        val extractedData: String? = null
     )
     
     override fun onNotificationPosted(sbn: StatusBarNotification) {
@@ -99,7 +99,7 @@ class NotificationForwarderService : NotificationListenerService() {
         packageName: String,
         title: String?,
         content: String?
-    ): NotificationPayload {
+    ): Map<String, Any> {
         val extractedData = rule.extractionPattern?.let { pattern ->
             val regex = Regex(pattern, RegexOption.IGNORE_CASE)
             val titleMatch = title?.let { regex.find(it) }
@@ -111,27 +111,43 @@ class NotificationForwarderService : NotificationListenerService() {
                 ?: contentMatch?.value
         }
         
-        // Look up mapped values based on extracted data
-        val mappedValues = extractedData?.let { key ->
-            rule.valueMappings?.get(key)?.also {
-                Log.d(TAG, "Found mapping for '$key': $it")
-            } ?: run {
-                Log.d(TAG, "No mapping found for '$key'")
-                null
+        val payload = mutableMapOf<String, Any>()
+
+        if (rule.payloadMappings != null && extractedData != null) {
+            val mappedValues = rule.payloadMappings[extractedData]
+            if (mappedValues != null) {
+                payload.putAll(mappedValues)
+                Log.d(TAG, "Using mapped payload for '$extractedData': $mappedValues")
+            } else {
+                Log.d(TAG, "No mapping found for '$extractedData'")
             }
         }
 
-        return NotificationPayload(
-            app = packageName,
-            title = title,
-            content = content,
-            timestamp = System.currentTimeMillis(),
-            extractedData = extractedData,
-            mappedValues = mappedValues
-        )
+        if (rule.sendMetadata) {
+            val metadata = NotificationMetadata(
+                app = packageName,
+                title = title,
+                content = content,
+                timestamp = System.currentTimeMillis(),
+                extractedData = extractedData
+            )
+            payload["metadata"] = metadata
+        }
+
+        if (rule.payloadMappings == null) {
+            payload["app"] = packageName
+            payload["title"] = title
+            payload["content"] = content
+            payload["timestamp"] = System.currentTimeMillis()
+            if (extractedData != null) {
+                payload["extractedData"] = extractedData
+            }
+        }
+
+        return payload
     }
-    
-    private suspend fun sendHttpRequest(url: String, payload: NotificationPayload) {
+
+    private suspend fun sendHttpRequest(url: String, payload: Map<String, Any>) {
         try {
             val json = gson.toJson(payload)
             val mediaType = "application/json; charset=utf-8".toMediaType()
@@ -148,6 +164,7 @@ class NotificationForwarderService : NotificationListenerService() {
                 httpClient.newCall(request).execute().use { response ->
                     if (response.isSuccessful) {
                         Log.d(TAG, "HTTP request successful: ${response.code}")
+                        Log.d(TAG, "Payload sent: $json")
                     } else {
                         Log.w(TAG, "HTTP request failed: ${response.code} ${response.message}")
                     }

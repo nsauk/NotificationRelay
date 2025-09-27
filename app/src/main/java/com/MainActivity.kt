@@ -29,7 +29,8 @@ class MainActivity : AppCompatActivity() {
         val extractionPattern: String? = null,
         val titlePattern: String? = null,
         val contentPattern: String? = null,
-        val valueMappings: Map<String, Map<String, Any>>? = null
+        val payloadMappings: Map<String, Map<String, Any>>? = null,
+        val sendMetadata: Boolean = true
     )
     
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,23 +72,26 @@ class MainActivity : AppCompatActivity() {
                 url = "https://your-webhook-url.com/notify",
                 titlePattern = ".*Order.*",
                 extractionPattern = "Order #(\\w+)",
-                valueMappings = mapOf(
+                sendMetadata = true,
+                payloadMappings = mapOf(
                     "ABC123" to mapOf(
                         "customer" to "John Doe",
                         "priority" to "high",
-                        "amount" to 299.99
+                        "amount" to 299.99,
+                        "department" to "Sales"
                     ),
                     "XYZ789" to mapOf(
                         "customer" to "Jane Smith",
                         "priority" to "normal",
-                        "amount" to 150.00
+                        "amount" to 150.00,
+                        "department" to "Support"
                     )
                 )
             )
         )
         configEdit.setText(gson.toJson(defaultRules))
     }
-    
+
     private fun saveConfig() {
         try {
             val configText = configEdit.text.toString()
@@ -103,7 +107,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Invalid JSON format: ${e.message}", Toast.LENGTH_LONG).show()
         }
     }
-    
+
     private fun requestNotificationAccess() {
         if (!isNotificationAccessGranted()) {
             val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
