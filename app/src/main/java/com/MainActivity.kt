@@ -8,13 +8,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
 import androidx.core.app.NotificationManagerCompat
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.File
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : Activity() {
     private lateinit var statusText: TextView
     private lateinit var configEdit: EditText
     private lateinit var saveButton: Button
