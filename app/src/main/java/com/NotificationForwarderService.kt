@@ -13,7 +13,7 @@ import java.io.IOException
 
 class NotificationForwarderService : NotificationListenerService() {
     
-    private val TAG = "NotificationForwarder"
+    private val TAG = "NotificationRelay"
     private val gson = Gson()
     private val serviceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     
