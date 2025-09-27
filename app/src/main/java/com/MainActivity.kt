@@ -130,6 +130,12 @@ class MainActivity : Activity() {
             "✗ Notification access: DENIED\n✗ Service: DISABLED"
         }
         statusText.text = statusMessage
+
+        if (hasAccess) {
+            statusText.setBackgroundColor(0xFF2d2d2d.toInt())
+        } else {
+            statusText.setBackgroundColor(0xFFcc0000.toInt())
+        }
     }
     
     override fun onResume() {
