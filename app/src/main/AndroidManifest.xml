@@ -7,7 +7,7 @@
 
     <application
         android:label="N-Relay"
-        android:theme="@android:style/Theme.Material.DayNight"
+        android:theme="@android:style/Theme.Material"
         android:usesCleartextTraffic="true">
 
         <activity
