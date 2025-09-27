@@ -6,9 +6,8 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.*
-import okhttp3.*
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.RequestBody.Companion.toRequestBody
+import java.net.HttpURLConnection
+import java.net.URL
 import java.io.File
 import java.io.IOException
 
@@ -16,7 +15,6 @@ class NotificationForwarderService : NotificationListenerService() {
     
     private val TAG = "NotificationForwarder"
     private val gson = Gson()
-    private val httpClient = OkHttpClient()
     private val serviceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     
     data class NotificationRule(
@@ -149,35 +147,39 @@ class NotificationForwarderService : NotificationListenerService() {
 
     private suspend fun sendHttpRequest(url: String, payload: Map<String, Any?>) {
         try {
-            val json = gson.toJson(payload)
-            val mediaType = "application/json; charset=utf-8".toMediaType()
-            val requestBody = json.toRequestBody(mediaType)
-            
-            val request = Request.Builder()
-                .url(url)
-                .post(requestBody)
-                .addHeader("Content-Type", "application/json")
-                .addHeader("User-Agent", "NotificationRelay/1.0")
-                .build()
-            
             withContext(Dispatchers.IO) {
-                httpClient.newCall(request).execute().use { response ->
-                    if (response.isSuccessful) {
-                        Log.d(TAG, "HTTP request successful: ${response.code}")
-                        Log.d(TAG, "Payload sent: $json")
-                    } else {
-                        Log.w(TAG, "HTTP request failed: ${response.code} ${response.message}")
-                    }
+                val connection = URL(url).openConnection() as HttpURLConnection
+                connection.apply {
+                    requestMethod = "POST"
+                    setRequestProperty("Content-Type", "application/json")
+                    setRequestProperty("User-Agent", "NotificationRelay/1.0")
+                    doOutput = true
+                    connectTimeout = 10000
+                    readTimeout = 10000
                 }
+
+                val json = gson.toJson(payload)
+                connection.outputStream.use { outputStream ->
+                    outputStream.write(json.toByteArray())
+                }
+
+                val responseCode = connection.responseCode
+                if (responseCode in 200..299) {
+                    Log.d(TAG, "HTTP request successful: $responseCode")
+                    Log.d(TAG, "Payload sent: $json")
+                } else {
+                    Log.w(TAG, "HTTP request failed: $responseCode ${connection.responseMessage}")
+                }
+
+                connection.disconnect()
             }
-            
         } catch (e: IOException) {
             Log.e(TAG, "Network error sending HTTP request", e)
         } catch (e: Exception) {
             Log.e(TAG, "Error sending HTTP request", e)
         }
     }
-    
+
     private fun loadRules(): List<NotificationRule> {
         val configFile = File(filesDir, "config.json")
         
