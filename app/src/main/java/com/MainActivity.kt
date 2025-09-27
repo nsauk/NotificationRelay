@@ -1,4 +1,4 @@
-package com.notificationforwarder
+package xyz.nsauk.notificationrelay
 
 import android.content.ComponentName
 import android.content.Intent

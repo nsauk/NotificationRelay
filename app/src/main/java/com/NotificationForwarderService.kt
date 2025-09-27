@@ -1,4 +1,4 @@
-package com.notificationforwarder
+package xyz.nsauk.notificationrelay
 
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
@@ -141,7 +141,7 @@ class NotificationForwarderService : NotificationListenerService() {
                 .url(url)
                 .post(requestBody)
                 .addHeader("Content-Type", "application/json")
-                .addHeader("User-Agent", "NotificationForwarder/1.0")
+                .addHeader("User-Agent", "NotificationRelay/1.0")
                 .build()
             
             withContext(Dispatchers.IO) {

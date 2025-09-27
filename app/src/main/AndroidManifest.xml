@@ -7,7 +7,7 @@
 
     <application
         android:allowBackup="false"
-        android:label="NotificationForwarder"
+        android:label="NotificationRelay"
         android:theme="@style/Theme.AppCompat.DayNight"
         android:usesCleartextTraffic="true">
 

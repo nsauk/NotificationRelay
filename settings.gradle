@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "NotificationForwarder"
+rootProject.name = "NotificationRelay"
 include ':app'

@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.notificationforwarder'
+    namespace 'xyz.nsauk.notificationrelay'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.notificationforwarder"
+        applicationId "xyz.nsauk.notificationrelay"
         minSdk 21
         targetSdk 34
         versionCode 1
