@@ -112,10 +112,42 @@ class NotificationForwarderService : NotificationListenerService() {
         val payload = mutableMapOf<String, Any?>()
 
         if (rule.payloadMappings != null && extractedData != null) {
-            val mappedValues = rule.payloadMappings[extractedData]
+            var mappedValues: Map<String, Any>? = null
+
+            // Try exact key match first
+            mappedValues = rule.payloadMappings[extractedData]
+
+            // If no exact match, try regex patterns
+            if (mappedValues == null) {
+                for ((pattern, values) in rule.payloadMappings) {
+                    try {
+                        val regex = Regex(pattern, RegexOption.IGNORE_CASE)
+                        val match = regex.find(extractedData)
+                        if (match != null) {
+                            // Replace placeholders like {1}, {2} with capture groups
+                            mappedValues = values.mapValues { (_, value) ->
+                                if (value is String) {
+                                    var result = value
+                                    match.groupValues.forEachIndexed { index, group ->
+                                        result = result.replace("{$index}", group)
+                                    }
+                                    result
+                                } else {
+                                    value
+                                }
+                            }
+                            Log.d(TAG, "Regex match for pattern '$pattern' with '$extractedData': $mappedValues")
+                            break
+                        }
+                    } catch (e: Exception) {
+                        Log.w(TAG, "Invalid regex pattern: $pattern", e)
+                    }
+                }
+            }
+
             if (mappedValues != null) {
                 payload.putAll(mappedValues as Map<String, Any>)
-                Log.d(TAG, "Using mapped payload for '$extractedData': $mappedValues")
+                Log.d(TAG, "Using mapped payload: $mappedValues")
             } else {
                 Log.d(TAG, "No mapping found for '$extractedData'")
             }
